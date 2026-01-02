@@ -14,4 +14,7 @@ response = requests.get(url, headers=headers)
         
         # HTML 파싱
 soup = BeautifulSoup(response.text, "lxml")
-print(soup.text)
+items = soup.select('tr')
+
+print(items)
+print("____________")

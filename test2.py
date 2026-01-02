@@ -7,7 +7,7 @@ headers = {
             "AppleWebKit/537.36 (KHTML, like Gecko) "
             "Chrome/120.0.0.0 Safari/537.36"
         }
-response = requests.get(url,headers=headers, verify=False)
+response = requests.get(url,headers=headers)
 
 soup = BeautifulSoup (response.text,'lxml')
 items = soup.select('#_topItems2 > tr')
