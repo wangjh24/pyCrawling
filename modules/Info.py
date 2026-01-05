@@ -1,17 +1,28 @@
-import requests 
+import requests
 from bs4 import BeautifulSoup
-def get_info(stock_code):
-    try: 
-        #URL 주소         
-        url = f"https://finance.naver.com/item/frgn.naver?code={stock_code}"
-        headers = {
-            "User-Agent": "Mozilla/5.0(Windows NT 10.0; Win64; x64)"
-                            "AppleWebKit/537.36(KHTML,like Gecko)"
-                            "Chrome/120.0.0.0 safari/537.36"
-        }
-    except requests.exceptions.RequestException as e:
-        print(f"[에러] 네트워크 요청 실패: {e}")
-        return None
-    except Exception as e:
-        print(f"[에러] 데이터 파싱 실패: {e}")
-        return None
+import pandas as pd
+import sys
+
+sys.stdout.reconfigure(encoding='utf-8')
+
+url = "https://finance.naver.com/item/main.naver?code=005930"
+headers = {"User-Agent": "Mozilla/5.0"}
+
+res = requests.get(url, headers=headers)
+res.encoding = "euc-kr"
+
+soup = BeautifulSoup(res.text, "html.parser")
+
+table = soup.select_one("div.section.invest_trend table.tb_type1")
+rows = table.select("tbody tr")
+
+data = []
+for row in rows:
+    cols = row.find_all("td")
+    if len(cols) == 4:
+        data.append([c.get_text(strip=True) for c in cols])
+
+columns = ["매도상위", "거래량", "매수상위", "거래량"]
+df = pd.DataFrame(data, columns=columns)
+
+print(df)

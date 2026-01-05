@@ -1,28 +1,26 @@
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
-
-
+import sys
+sys.stdout.reconfigure(encoding='utf-8')
 url = "https://finance.naver.com/item/frgn.naver?code=005930&page=1"
+headers = {"User-Agent": "Mozilla/5.0"}
 
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) "
-            "Chrome/120.0.0.0 Safari/537.36"
-}
+res = requests.get(url, headers=headers)
+res.encoding = "euc-kr"
 
-response = requests.get(url, headers=headers)
-response.encoding = "euc-kr"  # 네이버 금융 필수
-html = response.text
-soup = BeautifulSoup(html, "html.parser")
-table = soup.find("table", summary="외국인 기관 순매매 거래량")
+soup = BeautifulSoup(res.text, "html.parser")
+
+# caption 기준으로 테이블 찾기
+table = soup.find("caption", string="외국인 기관 순매매 거래량").find_parent("table")
 rows = table.find_all("tr")
-data = []
 
+data = []
 for row in rows:
     cols = row.find_all("td")
     if len(cols) == 9:
-        data.append([col.get_text(strip=True) for col in cols])
+        data.append([c.get_text(strip=True) for c in cols])
+
 columns = [
     "날짜", "종가", "전일비", "등락률", "거래량",
     "기관 순매매량", "외국인 순매매량",
