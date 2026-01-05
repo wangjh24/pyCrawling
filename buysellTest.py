@@ -14,7 +14,7 @@ items = soup.select('#_topItems2 > tr')
 
 print ("=================")
 for item in items: 
-    
+
     subject = item. select_one('th > a')
     tds = item.select ('td')
     if subject and len (tds) >= 3 : 

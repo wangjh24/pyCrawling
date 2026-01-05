@@ -19,3 +19,4 @@ def get_community(stock_code):
     except Exception as e:
         print(f"[에러] 데이터 파싱 실패: {e}")
         return None
+    
