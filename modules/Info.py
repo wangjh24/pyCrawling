@@ -4,18 +4,18 @@ import pandas as pd
 import sys
 
 sys.stdout.reconfigure(encoding='utf-8')
-
-url = "https://finance.naver.com/item/main.naver?code=005930"
+code = "005930"
+url = f"https://finance.naver.com/item/main.naver?code={code}"
 headers = {"User-Agent": "Mozilla/5.0"}
 
 res = requests.get(url, headers=headers)
-res.encoding = "euc-kr"
+# res.encoding = "euc-kr"
 
 soup = BeautifulSoup(res.text, "html.parser")
 
-table = soup.select_one("div.section.invest_trend table.tb_type1")
+table = table = soup.find("caption", string="거래원 정보").find_parent("table")
 rows = table.select("tbody tr")
-
+print (rows)
 data = []
 for row in rows:
     cols = row.find_all("td")

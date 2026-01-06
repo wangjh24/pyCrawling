@@ -1,18 +1,24 @@
-import requests 
+import requests
 from bs4 import BeautifulSoup
-def get_news(stock_code):
-    try: 
-        #URL 주소         
-        url = f"https://finance.naver.com/item/frgn.naver?code={stock_code}"
-        headers = {
-            "User-Agent": "Mozilla/5.0(Windows NT 10.0; Win64; x64)"
-                            "AppleWebKit/537.36(KHTML,like Gecko)"
-                            "Chrome/120.0.0.0 safari/537.36"
-        }
+import time
 
-    except requests.exceptions.RequestException as e:
-        print(f"[에러] 네트워크 요청 실패: {e}")
-        return None
-    except Exception as e:
-        print(f"[에러] 데이터 파싱 실패: {e}")
-        return None
+base_url = "https://finance.naver.com"
+iframe_src = "/item/news.naver?code=005930"
+
+url = base_url + iframe_src
+
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+    "Referer": "https://finance.naver.com/item/main.naver?code=005930"
+}
+
+session = requests.Session()
+response = session.get(url, headers=headers)
+response.raise_for_status()
+
+soup = BeautifulSoup(response.text, "html.parser")
+news_items = soup.select("td.title a")
+for news in news_items:
+    title = news.text.strip()
+    print(title)
+    time.sleep(0.3)
