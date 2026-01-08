@@ -10,7 +10,7 @@ def info_get(code):
 
     engine = create_engine('postgresql://test:1234@localhost:5432/PyCrawling')
     table_name = 'info'+code
-    url = f"https://finance.naver.com/item/main.naver?code={code}"
+    url = f"https://finance.naver.com"
     headers = {"User-Agent": "Mozilla/5.0"}
 
     res = requests.get(url, headers=headers)
@@ -42,3 +42,5 @@ def info_get(code):
         print(df_from_db)
     except Exception as e:
         print(f"출력 실패: 테이블이 존재하지 않거나 에러가 발생했습니다. ({e})")
+    finally:
+        engine.dispose()

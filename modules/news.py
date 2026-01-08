@@ -4,6 +4,7 @@ from urllib.parse import urlparse, parse_qs
 import time
 import pandas as pd
 from sqlalchemy import create_engine
+import sys
 
 def news_get(code):
     sys.stdout.reconfigure(encoding='utf-8')
@@ -14,7 +15,7 @@ def news_get(code):
     url = f"https://finance.naver.com/item/frgn.naver?code={code}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) ",
-        "Referer": f"https://finance.naver.com/item/main.naver?code={code}"
+        "Referer": f"https://finance.naver.com"
         } 
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -25,8 +26,9 @@ def news_get(code):
         href = last_page_tag.get('href')
         page = href.split('page=')[-1]    
 
-
-    for number in range(int(page)):
+    columns = ["title","contant"]
+    data = []
+    for number in range(int(1)): #page
         url = f"https://finance.naver.com/item/news_news.naver?code={code}&page={number+1}"
 
         response = requests.get(url, headers=headers)
@@ -34,15 +36,15 @@ def news_get(code):
         soup = BeautifulSoup(response.text, "html.parser")
 
         news_items = soup.select("td.title a")
-
+            
         if not news_items:
             print("뉴스 항목을 찾지 못했습니다.")
         else:
-            data = []
-            for news in news_items:
-                relative_link = news['href']
+            unique_news_items = list({news['href']: news for news in news_items}.values())
+            for news in unique_news_items:
+                link = news['href']
         
-                parsed_url = urlparse(relative_link)
+                parsed_url = urlparse(link)
                 params = parse_qs(parsed_url.query)
         
                 office_id = params.get('office_id')[0]
@@ -60,11 +62,11 @@ def news_get(code):
                     title = title_tag.get_text(strip=True) if title_tag else "제목 없음"
                     area = area_tag.get_text(strip=True) if area_tag else "본문 없음"
                     data.append([title,area])
-                    columns = ["title","contant"]
-                    df =pd.DataFrame(data,columns=columns)
+                    time.sleep(0.5)
+    df =pd.DataFrame(data,columns=columns)
 
             
-                    time.sleep(0.5)
+                    
     try : 
         df.to_sql(table_name,engine,if_exists='replace',index=False)
         print(f"{table_name}를 저장했습니다.")
@@ -79,3 +81,5 @@ def news_get(code):
         print(df_from_db)
     except Exception as e:
         print(f"출력 실패: 테이블이 존재하지 않거나 에러가 발생했습니다. ({e})")
+    finally:
+        engine.dispose()
