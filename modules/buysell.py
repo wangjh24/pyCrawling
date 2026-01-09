@@ -3,14 +3,12 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import sys
 from sqlalchemy import create_engine
+sys.stdout.reconfigure(encoding='utf-8')
+engine = create_engine('postgresql://test:1234@localhost:5432/PyCrawling')
 
-def buysell_get(code):
-    sys.stdout.reconfigure(encoding='utf-8')
-    
-    engine = create_engine('postgresql://test:1234@localhost:5432/PyCrawling')
-    table_name = 'buysell'+code
-
-    url = f"https://finance.naver.com"
+def buysell_put(code):
+    table_name = 'buysell'
+    url = f"https://finance.naver.com/item/frgn.naver?code={code}"
     headers = {'User-Agent': 'Mozilla/5.0'} 
     res = requests.get(url, headers=headers)
     soup = BeautifulSoup(res.text, 'html.parser')
@@ -27,7 +25,7 @@ def buysell_get(code):
             "insstitution_net_volume", "foreign_net_volume",
             "foreign_holding_shares", "foreign_holding_ratio"
         ]
-    for number in range (int(page)):
+    for number in range (int(10)):
         url = f"https://finance.naver.com/item/frgn.naver?code={code}&page={number+1}"
 
         res = requests.get(url, headers=headers)
@@ -44,18 +42,23 @@ def buysell_get(code):
             if len(cols) == 9:
                 data.append([c.get_text(strip=True) for c in cols])
     df = pd.DataFrame(data, columns=columns)
+    df.insert(0, 'code', code)
         #print(df)
     try : 
-        df.to_sql(table_name,engine,if_exists='replace',index=False)
+        df.to_sql(table_name,engine,if_exists='append',index=False)
         print(f"{table_name}를 저장했습니다.")
     except ValueError:
         print(f"----------------")
     except Exception as e:
         print (f"저장 실패 :에러({e})")
+    finally:
+        engine.dispose()
 
+def buysell_get(code):
+    table_name = 'buysell'
     print("\n--- DB 테이블 내용 출력 ---")
     try:
-        df_from_db = pd.read_sql(f'SELECT * FROM "{table_name}"', engine)
+        df_from_db = pd.read_sql(f"SELECT * FROM {table_name} WHERE code = '{code}'", engine)
         print(df_from_db)
     except Exception as e:
         print(f"출력 실패: 테이블이 존재하지 않거나 에러가 발생했습니다. ({e})")
