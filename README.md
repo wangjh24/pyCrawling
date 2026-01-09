@@ -8,7 +8,7 @@
 - 種目討論照会機能
 
 ## 2.Tech Stack
-- **Frontend**: React, JavaScript (예정)
+- **Frontend**: React, JavaScript (予定)
 - **Backend**: Python, PostgreSQL
 
 ## 3.Getting Started
