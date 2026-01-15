@@ -1,6 +1,10 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from backend.routers import info
+from backend.routers import stock
+from backend.routers import frgn
+from backend.routers import board
+from backend.routers import news
+from backend.routers import summary
 import uvicorn
 
 app = FastAPI()
@@ -14,7 +18,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(info.router)
+app.include_router(stock.router)
+app.include_router(frgn.router)
+app.include_router(board.router)
+app.include_router(news.router)
+app.include_router(summary.router)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)

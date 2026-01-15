@@ -10,7 +10,7 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
 )
 
-def info_crawl_and_save(code: str):
+def stock_crawl_and_save(code: str):
     url = f"https://finance.naver.com/item/main.naver?code={code}"
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
@@ -40,21 +40,21 @@ def info_crawl_and_save(code: str):
         df.insert(0, "code", code)
 
         # DB 저장 (replace)
-        df.to_sql('info', engine, if_exists='replace', index=False)
+        df.to_sql('stock', engine, if_exists='replace', index=False)
         return df.to_dict(orient="records")
     except Exception as e:
         print(f"Crawling Error: {e}")
         return None
 
 @router.get("/{code}")
-async def get_stock_info(code: str):
+async def get_stock(code: str):
     # 1. 크롤링 및 DB 업데이트
-    result = info_crawl_and_save(code)
+    result = stock_crawl_and_save(code)
 
     if result is None:
         # 크롤링 실패 시 DB에서 기존 데이터라도 찾음
         try:
-            df = pd.read_sql(f"SELECT * FROM info WHERE code = '{code}'", engine)
+            df = pd.read_sql(f"SELECT * FROM stock WHERE code = '{code}'", engine)
             if df.empty:
                 raise HTTPException(status_code=404, detail="데이터를 찾을 수 없습니다.")
             result = df.to_dict(orient="records")

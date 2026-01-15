@@ -1,67 +1,53 @@
 import React, { useState } from "react";
 import axios from "axios";
 
+// API 기본 URL 설정
+const API_BASE_URL = "http://localhost:8000/api";
+
 function App() {
   const [code, setCode] = useState("");
-  const [stockData, setStockData] = useState([]);
+  const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState("stock"); // 현재 선택된 탭
 
-  const handleSearch = async () => {
+  // 탭 구성 정보
+  const tabs = [
+    { id: "frgn", name: "외인/기관", endpoint: "frgn" },
+    { id: "news", name: "최신뉴스", endpoint: "news" },
+    { id: "board", name: "종목토론", endpoint: "board" },
+    { id: "stock", name: "매매동향", endpoint: "stock" },
+  ];
+
+  const handleSearch = async (targetTab = activeTab) => {
     if (!code) return alert("종목 코드를 입력하세요.");
 
     setLoading(true);
-    try {
-      // FastAPI 엔드포인트 호출
-      const response = await axios.get(
-        `http://localhost:8000/api/stock/${code}`
-      );
-      setStockData(response.data);
-    } catch (error) {
-      console.error("데이터 호출 실패:", error);
-      alert("데이터를 가져오는데 실패했습니다.");
-    } finally {
-      setLoading(false);
-    }
+    setData([]); // 이전 데이터 초기화
+  };
+
+  // 탭 변경 핸들러
+  const changeTab = (tabId) => {
+    setActiveTab(tabId);
+    if (code) handleSearch(tabId); // 코드가 입력되어 있다면 바로 검색
   };
 
   return (
     <div>
-      <h1>주식 종목 정보 조회</h1>
+      <h1>주식정보 조회</h1>
 
-      <div>
+      {/* 검색 바 */}
+      <div style={{ marginBottom: "20px" }}>
         <input
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           placeholder="종목코드 (예: 005930)"
+          style={{ padding: "8px", marginRight: "10px" }}
         />
-        <button onClick={handleSearch}>
-          {loading ? "조회 중..." : "조회"}
+        <button onClick={() => handleSearch()} disabled={loading}>
+          {loading ? "조회 중..." : "데이터 조회"}
         </button>
       </div>
-
-      {stockData.length > 0 && (
-        <table border="1">
-          <thead>
-            <tr>
-              <th>매도상위</th>
-              <th>매도거래량</th>
-              <th>매수상위</th>
-              <th>매수거래량</th>
-            </tr>
-          </thead>
-          <tbody>
-            {stockData.map((item, index) => (
-              <tr key={index}>
-                <td>{item.sell_rank}</td>
-                <td>{item.sell_volume}</td>
-                <td>{item.buy_rank}</td>
-                <td>{item.buy_volume}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
     </div>
   );
 }
