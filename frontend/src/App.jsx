@@ -33,7 +33,7 @@ function App() {
 
   return (
     <div>
-      <h1>주식정보 조회</h1>
+      <h1>주식 종목 정보 조회</h1>
 
       {/* 검색 바 */}
       <div style={{ marginBottom: "20px" }}>

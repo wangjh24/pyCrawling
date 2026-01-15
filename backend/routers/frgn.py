@@ -45,13 +45,42 @@ def buysell_crawl_and_save(code: str):
             cols = row.find_all("td")
             # 날짜 데이터가 있는 행만 추출 (보통 9개 컬럼)
             if len(cols) == 9 and cols[0].get_text(strip=True):
-                all_data.append([c.get_text(strip=True).replace(",", "") for c in cols])
+                raw_data = [c.get_text(strip=True).replace(",", "") for c in cols]
+                change_text = raw_data[2]  # 예: "상승200", "하락100", "0"
+
+                change_1 = ""  # 상승, 하락, 보합
+                change_2 = 0  # 수치
+
+                if "상승" in change_text:
+                    change_1 = "상승"
+                    change_2 = change_text.replace("상승", "")
+                elif "하락" in change_text:
+                    change_1 = "하락"
+                    change_2 = change_text.replace("하락", "")
+                else:
+                    change_1 = "보합"
+                    change_2 = change_text.replace("보합","")
+
+                # 새로운 리스트 구성 (change 대신 change_1, change_2 삽입)
+                processed_row = [
+                    raw_data[0],  # date
+                    raw_data[1],  # close_price
+                    change_1,  # change_1 (상태)
+                    change_2,  # change_2 (수치)
+                    raw_data[3],  # change_rate
+                    raw_data[4],  # volume
+                    raw_data[5],  # institution_net_volume
+                    raw_data[6],  # foreign_net_volume
+                    raw_data[7],  # foreign_holding_shares
+                    raw_data[8]  # foreign_holding_ratio
+                ]
+                all_data.append(processed_row)
 
     if not all_data:
         return None
 
     columns = [
-        "date", "close_price", "change", "chage_rate", "volume",
+        "date", "close_price", "change_val","change", "chage_rate", "volume",
         "insstitution_net_volume", "foreign_net_volume",
         "foreign_holding_shares", "foreign_holding_ratio"
     ]
