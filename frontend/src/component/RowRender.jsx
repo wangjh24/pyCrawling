@@ -1,7 +1,5 @@
 import React from "react";
 
-// 컴포넌트로 변경: props로 tabId와 item을 받습니다.
-// (index는 호출하는 부모 쪽에서 key로 사용하므로 여기선 굳이 안 받아도 됩니다.)
 function RenderRow({ tabId, item }) {
   if (tabId === "frgn") {
     return (
