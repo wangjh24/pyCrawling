@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import RenderRow from "./RowRender";
-import style from "./css/font.css";
+
 const API_BASE_URL = "http://localhost:8000/api";
 
 function TabPage() {

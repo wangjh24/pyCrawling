@@ -40,7 +40,7 @@ def stock_crawl_and_save(code: str):
         df.insert(0, "code", code)
 
         # DB 저장 (replace)
-        df.to_sql('stock', engine, if_exists='replace', index=False)
+        df.to_sql('stock', engine, if_exists='append', index=False)
         return df.to_dict(orient="records")
     except Exception as e:
         print(f"Crawling Error: {e}")

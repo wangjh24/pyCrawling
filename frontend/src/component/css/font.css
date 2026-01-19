@@ -31,12 +31,12 @@
 }
 
 .input:focus {
-  border-color: #00c73c; /* 네이버 그린 포인트 */
+  border-color: #59ffde;
 }
 
 .searchButton {
   padding: 0 24px;
-  background-color: #00c73c;
+  background-color: #30ffcb;
   color: white;
   border: none;
   border-radius: 8px;
@@ -70,7 +70,7 @@
 }
 
 .tabActive {
-  color: #00c73c;
+  color: #00fffb;
   font-weight: 700;
 }
 
@@ -81,7 +81,7 @@
   left: 0;
   width: 100%;
   height: 2px;
-  background-color: #00c73c;
+  background-color: #00eaff;
 }
 
 /* 데이터 테이블 */
