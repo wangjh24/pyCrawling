@@ -12,14 +12,21 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - React を用いた直感的な株価ダッシュボードのUI実装
 
 ---
-
+## 🔧Environment
+- **OS**: Windows11
+- **Python**: 3.11.9
+- **Node.js**: 24.12.0
+- **FastAPI**: 0.128.0
+- **PostgreSQL**: 18.1
+- **React**: 19.2.3
+---
 ## 🛠 技術スタック
 
 ### [Backend]
-- **Language**: Python 3.11.9
+- **Language**: Python 
 - **Framework**: FastAPI
 - **Library**: BeautifulSoup4, Requests, SQLAlchemy (ORM)
-- **Database**: PostgreSQL 18.1
+- **Database**: PostgreSQL 
 
 ### [Frontend]
 - **Library**: React, Axios
