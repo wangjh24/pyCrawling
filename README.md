@@ -83,12 +83,10 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `payout_ratio`: 配当性向 
   - `type` : 区分
 
-##📂 Directory: ディレクトリ構造
+## 📂 Directory: ディレクトリ構造
 ```project
 frontend
 ┗src
- ┣ assets
- ┃ ┗ react.svg
  ┣ component
  ┃ ┣ css
  ┃ ┃ ┗ font.css
@@ -111,9 +109,9 @@ backend
 ```
 
 
-##📊 実行結果
+## 📊 実行結果
 
-##⚙️開始方法
+## ⚙️開始方法
 ```
 cd [folder name] #or mkdir [folder name]
 
