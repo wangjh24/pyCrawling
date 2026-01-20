@@ -19,7 +19,7 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
 - **Language**: Python 3.11.9
 - **Framework**: FastAPI
 - **Library**: BeautifulSoup4, Requests, SQLAlchemy (ORM)
-- **Database**: PostgreSQL
+- **Database**: PostgreSQL 18.1
 
 ### [Frontend]
 - **Library**: React, Axios
