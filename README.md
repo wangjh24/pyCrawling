@@ -113,6 +113,37 @@ backend
 
 ##📊 実行結果
 
-##🚀 導入方法
+##⚙️開始方法
+```
+cd [folder name] #or mkdir [folder name]
+
+git clone https://github.com/wangjh24/pyCrawling.git 
+```
+
+**backend**
+```
+cd backend
+
+# 仮想環境の生成と活性化
+python -m venv venv
+source venv/bin/activate  # Windows: venv\Scripts\activate
+
+# 依存性設置
+pip install -r requirements.txt
+
+# サーバー実行
+uvicorn main:app --reload
+```
+
+**frontend**
+```
+cd .. frontend
+
+# パッケージ·インストール
+npm install  
+
+# 実行
+npm run dev #npm start
+```
 
  
