@@ -51,7 +51,7 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `close_price`: 終値 
   - `change_val`: 前日比(値) 
   - `change`: 騰落率 
-  - `chage_rate` : 騰落率
+  - `change_rate` : 騰落率
   - `volume` : 出来高
   - `insstitution_net_volume` : 機関純売買量
   - `foreign_net_volume` :外国人純売買量
@@ -62,13 +62,13 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `code`: 銘柄コード 
   - `date`: 日付
   - `title`: タイトル 
-  - `contant`: 內容 
+  - `content`: 內容 
  
 - **Table: `board`**
   - `code`: 銘柄コード 
   - `date`: 日付 
   - `title`: タイトル 
-  - `contant`: 內容 
+  - `content`: 內容 
 
 - **Table: `summary`**
   - `code`: 銘柄コード 
