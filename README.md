@@ -71,7 +71,8 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `content`: 內容 
 
 - **Table: `summary`**
-  - `code`: 銘柄コード 
+  - `code`: 銘柄コード
+  - `date`: 日付 
   - `revenue`: 売上高 
   - `operating_income`: 営業利益
   - `net_income`: 当期純利益 
