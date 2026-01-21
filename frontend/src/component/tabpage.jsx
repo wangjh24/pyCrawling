@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import RenderRow from "./RowRender";
-
+import styles from "./css/font.module.css";
 const API_BASE_URL = "http://localhost:8000/api";
 
 function TabPage() {
@@ -40,22 +40,31 @@ function TabPage() {
   };
 
   return (
-    <div>
-      <h1>주식 종목 정보 조회</h1>
-      <div>
+    <div className={styles.wrapper}>
+      <h1 className={styles.mainTitle}>주식 종목 정보 조회</h1>
+      <div className={styles.searchContainer}>
         <input
+          className={styles.searchInput}
           type="text"
           value={code}
           onChange={(e) => setCode(e.target.value)}
           placeholder="종목코드 (예: 005930)"
         />
-        <button onClick={() => handleSearch()} disabled={loading}>
+        <button
+          className={styles.btnPrimary}
+          onClick={() => handleSearch()}
+          disabled={loading}
+        >
           {loading ? "조회 중..." : "데이터 조회"}
         </button>
       </div>
-      <div>
+      <div className={styles.tabContainer}>
         {tabs.map((tab) => (
-          <button key={tab.id} onClick={() => changeTab(tab.id)}>
+          <button
+            className={styles.tabButton}
+            key={tab.id}
+            onClick={() => changeTab(tab.id)}
+          >
             {tab.name}
           </button>
         ))}
@@ -67,7 +76,12 @@ function TabPage() {
         <table border="1">
           <tbody>
             {data.map((item, index) => (
-              <RenderRow key={index} tabId={activeTab} item={item} />
+              <RenderRow
+                className={styles.active}
+                key={index}
+                tabId={activeTab}
+                item={item}
+              />
             ))}
           </tbody>
         </table>

@@ -76,9 +76,9 @@ def summary_crawl_and_save(code: str):
             'PER(배)': 'per',
             'BPS(원)': 'bps',
             'PBR(배)': 'pbr',
-            '주당배당금': 'dps',
-            '시가배당률': 'dividend_yield',
-            '배당성향': 'payout_ratio'
+            '주당배당금(원)': 'dps',
+            '시가배당률(%)': 'dividend_yield',
+            '배당성향(%)': 'payout_ratio'
         }
         df = df.rename(columns=rename_map)
 

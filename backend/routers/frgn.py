@@ -80,7 +80,7 @@ def buysell_crawl_and_save(code: str):
         return None
 
     columns = [
-        "date", "close_price", "change_val","change", "chage_rate", "volume",
+        "date", "close_price", "change_val","change", "change_rate", "volume",
         "insstitution_net_volume", "foreign_net_volume",
         "foreign_holding_shares", "foreign_holding_ratio"
     ]

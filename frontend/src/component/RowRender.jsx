@@ -8,7 +8,7 @@ function RenderRow({ tabId, item }) {
         <td>{item.close_price}</td>
         <td>{item.change_val}</td>
         <td>{item.change}</td>
-        <td>{item.chage_rate}</td>
+        <td>{item.change_rate}</td>
         <td>{item.volume}</td>
         <td>{item.insstitution_net_volume}</td>
         <td>{item.foreign_net_volume}</td>
@@ -40,16 +40,24 @@ function RenderRow({ tabId, item }) {
   } else if (tabId === "summary") {
     return (
       <tr>
-        <td>{item["2022.12"]}</td>
-        <td>{item["2023.12"]}</td>
-        <td>{item["2024.12"]}</td>
-        <td>{item["2025.12(E)"]}</td>
-        <td>{item["2024.09"]}</td>
-        <td>{item["2024.12_1"]}</td>
-        <td>{item["2025.03"]}</td>
-        <td>{item["2025.06"]}</td>
-        <td>{item["2025.09"]}</td>
-        <td>{item["2025.12(E)_1"]}</td>
+        <td>{item["date"]}</td>
+        <td>{item["type"]}</td>
+        <td>{item["revenue"]}</td>
+        <td>{item["operating_income"]}</td>
+        <td>{item["net_income"]}</td>
+        <td>{item["operating_margin"]}</td>
+        <td>{item["net_porfit_margin"]}</td>
+        <td>{item["roe"]}</td>
+        <td>{item["debt_to_equilty"]}</td>
+        <td>{item["quick_ratio"]}</td>
+        <td>{item["reserve_ratio"]}</td>
+        <td>{item["eps"]}</td>
+        <td>{item["per"]}</td>
+        <td>{item["bps"]}</td>
+        <td>{item["pbr"]}</td>
+        <td>{item["dps"]}</td>
+        <td>{item["dividend_yield"]}</td>
+        <td>{item["payout_ratio"]}</td>
       </tr>
     );
   }
