@@ -20,6 +20,9 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
 - **PostgreSQL**: 18.1
 - **React**: 19.2.3
 ---
+## 💻システムアーキテクチャ
+<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/d1b83127-77e3-4dd2-b3db-e03e2d11843b" />
+
 ## 🛠 技術スタック
 
 ### [Backend]
