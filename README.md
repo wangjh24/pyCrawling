@@ -131,7 +131,7 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `dividend_yield`: 配当利回り
   - `payout_ratio`: 配当性向 
   - `type` : 区分
-<img width="1240" height="716" alt="image" src="https://github.com/user-attachments/assets/ec390c2e-ebf1-40f1-a7f9-3be64c0f095b" />
+<img width="1690" height="720" alt="image" src="https://github.com/user-attachments/assets/d1d78670-3a1c-429a-a8bb-d4ca363c931b" />
 
 ## 📂 Directory: ディレクトリ構造
 ```project
@@ -161,37 +161,85 @@ backend
 
 ## 📊 実行結果
 
+<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/088ace06-7fc9-48bb-a45b-7853795315c8" />
+
+
 ## ⚙️開始方法
-```
-cd [folder name] #or mkdir [folder name]
+### 1. 準備：プログラムのダウンロード
 
+まずは、インターネット上にあるプログラムの設計図（ソースコード）を自分のパソコンに持ってきます。
+
+- *ターミナル（Mac）またはコマンドプロンプト（Windows）**を開いて、以下のコマンドを順番に打ち込みます。
+
+```bash
+# 1. 作業したいフォルダに移動します（例：デスクトップなど）
+# cd は "Change Directory（場所移動）" の略です
+cd Desktop  
+
+# 2. プログラムをコピーしてダウンロードします
 git clone https://github.com/wangjh24/pyCrawling.git 
+
+# 3. 作られたフォルダの中に入ります
+cd pyCrawling
 ```
 
-**backend**
-```
+---
+
+### 2. バックエンド（頭脳部分）の設定
+
+ここでは、データを処理するバックエンド（サーバー）を用意します。
+
+```bash
+
+# 1. バックエンド用のフォルダに移動します
 cd backend
 
-# 仮想環境の生成と活性化
+# 2. 「仮想環境」を作ります
+# パソコン全体を汚さないよう、このプロジェクト専用の小部屋（venv）を作るイメージです
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
 
-# 依存性設置
+# 3. その小部屋に入ります（活性化）
+# 【Mac/Linuxの方】
+source venv/bin/activate  
+# 【Windowsの方】
+# venv\Scripts\activate
+
+# 4. 必要な道具（ライブラリ）を一括でインストールします
+# pip は Python の道具箱のようなものです
 pip install -r requirements.txt
 
-# サーバー実行
+# 5. サーバーを起動します！
+# これで裏側のプログラムが動き出します
 uvicorn main:app --reload
 ```
 
-**frontend**
-```
-cd .. frontend
+ポイント: 最後に「Uvicorn running on http://127.0.0.1:8000」と表示されれば成功です！この画面は閉じずに、新しく別のターミナルウィンドウを開いて次のステップへ進んでください。
 
-# パッケージ·インストール
+---
+
+### 3. フロントエンド（見た目部分）の設定
+
+次に、ブラウザで操作するためのプロントエンドを準備します。
+
+```bash
+# 1. (新しいウィンドウで) プロジェクトの最初のフォルダに戻り、frontendに移動します
+cd pyCrawling/frontend
+
+# 2. 画面を作るための部品をダウンロードします
+# npm は JavaScript の道具箱です。少し時間がかかる場合があります
 npm install  
 
-# 実行
-npm run dev #npm start
+# 3. 画面を起動します！
+npm run dev
 ```
 
+---
+
+### 4. 実際に使ってみる
+
+全ての準備が整いました！
+
+1. `npm run dev` を実行した後に表示される URL（例：`http://localhost:5173` など）をコピーします。
+2. Google Chrome などのブラウザに貼り付けて開きます。
+3. 画面が表示されたら成功です！
  
