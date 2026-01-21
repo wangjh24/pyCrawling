@@ -131,7 +131,7 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
   - `dividend_yield`: 配当利回り
   - `payout_ratio`: 配当性向 
   - `type` : 区分
-<img width="1360" height="715" alt="image" src="https://github.com/user-attachments/assets/cb382ce5-baec-4166-b5cb-edddfe90b62e" />
+<img width="1240" height="716" alt="image" src="https://github.com/user-attachments/assets/ec390c2e-ebf1-40f1-a7f9-3be64c0f095b" />
 
 ## 📂 Directory: ディレクトリ構造
 ```project
