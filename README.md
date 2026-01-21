@@ -32,7 +32,7 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
     participant Web as 外部サイト (株価情報)
 
     User->>Frontend: 企業コード入力 & タブ選択<br/>(総合, ニュース, 掲示板, 業績, 売買動向)
-    Frontend->>Backend: GET /stock-info 요청
+    Frontend->>Backend: GET /stock-info 要請
 
     rect rgb(240, 248, 255)
     note right of Backend: DB確認フェーズ
@@ -54,6 +54,13 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
     Backend-->>Frontend: 最終データ (JSON) レスポンス
     Frontend->>User: 画面に情報を表示
 ```
+|段階|説明|
+|---|---|
+|リクエスト|Reactから企業コードと閲覧タイプを送信|
+|データ検証|DB内の既存データの有無と更新日時を確認|
+|スクレイピング|(データがない場合) 外部サイトから情報を取得|
+|保存|取得したデータをPostgreSQLに保存 (キャッシュ)|
+|表示|最終データをレスポンスし、画面に表示|
 ## 🛠 技術スタック
 
 ### [Backend]
