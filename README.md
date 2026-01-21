@@ -21,8 +21,39 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
 - **React**: 19.2.3
 ---
 ## 💻システムアーキテクチャ
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/d1b83127-77e3-4dd2-b3db-e03e2d11843b" />
+```mermaid
+ sequenceDiagram
+    autonumber
+    actor User as ユーザー (React)
+    participant Frontend as フロントエンド
+    participant Backend as バックエンド (FastAPI)
+    participant Scraper as スクレイピング部
+    participant DB as データベース (PostgreSQL)
+    participant Web as 外部サイト (株価情報)
 
+    User->>Frontend: 企業コード入力 & タブ選択<br/>(総合, ニュース, 掲示板, 業績, 売買動向)
+    Frontend->>Backend: GET /stock-info 요청
+
+    rect rgb(240, 248, 255)
+    note right of Backend: DB確認フェーズ
+    Backend->>DB: 保存済みデータの確認 (キャッシュ確認)
+    DB-->>Backend: データの有無を返却
+    end
+
+    alt データが存在しない、または古い場合
+        Backend->>Scraper: クローリング実行要請
+        Scraper->>Web: 対象ページのHTML取得
+        Web-->>Scraper: HTMLデータ返却
+        Scraper->>Scraper: データの解析・整形 (Parsing)
+        Scraper-->>Backend: 整形済みデータの返却
+        Backend->>DB: 新規保存・更新 (Upsert)
+    else 最新データが存在する場合
+        note right of Backend: クローリングをスキップ
+    end
+
+    Backend-->>Frontend: 最終データ (JSON) レスポンス
+    Frontend->>User: 画面に情報を表示
+```
 ## 🛠 技術スタック
 
 ### [Backend]
