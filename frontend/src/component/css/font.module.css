@@ -121,3 +121,34 @@
   background-color: #f0f0f0;
   cursor: not-allowed;
 }
+.contentContainer {
+  width: 1980px;
+  margin: 0 auto;
+  background-color: var(--white);
+  padding: 20px;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  box-sizing: border-box;
+}
+
+.mainTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.mainTable th,
+.mainTable td {
+  padding: 12px 8px;
+  border: 1px solid var(--border-color);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mainTable th {
+  background-color: #f1f3f5;
+  font-weight: 700;
+}
