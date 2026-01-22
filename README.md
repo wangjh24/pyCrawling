@@ -163,7 +163,7 @@ backend
 
 <img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/f5a8dd51-3439-40fd-ac1e-659b8ff6995f" />
 
-<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/2fe1951f-b8ba-4b4b-bee4-633d1d8f815f" />
+<img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/96713778-14af-4222-b796-bb2dbab62fb4" />
 
 <img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/c45ff251-efa4-43cf-a820-ed3f53f41d0f" />
 
