@@ -97,7 +97,7 @@ def summary_crawl_and_save(code: str):
 
         # DB 저장 (해당 종목의 데이터만 교체하는 것이 좋으나, 요청대로 replace 사용)
         # 실제 운영시에는 if_exists='append'와 unique 제약조건을 활용하는 것을 권장합니다.
-        df.to_sql('summary', engine, if_exists='replace', index=False)
+        df.to_sql('summary', engine, if_exists='append', index=False)
 
         return df.replace({np.nan: None}).to_dict(orient="records")
 

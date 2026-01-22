@@ -6,12 +6,51 @@ function RenderRow({ tabId, item }) {
       <tr>
         <td>{item.date}</td>
         <td>{item.close_price}</td>
-        <td>{item.change_val}</td>
-        <td>{item.change}</td>
-        <td>{item.change_rate}</td>
+        <td
+          style={{
+            color: item.change_val.includes("상승")
+              ? "red"
+              : item.change_val.includes("하락")
+                ? "blue"
+                : "black",
+          }}
+        >
+          {item.change}
+        </td>
+        <td
+          style={{
+            color: item.change_val.includes("상승")
+              ? "red"
+              : item.change_val.includes("하락")
+                ? "blue"
+                : "black",
+          }}
+        >
+          {item.change_rate}
+        </td>
         <td>{item.volume}</td>
-        <td>{item.insstitution_net_volume}</td>
-        <td>{item.foreign_net_volume}</td>
+        <td
+          style={{
+            color: item.insstitution_net_volume?.startsWith("+")
+              ? "red"
+              : item.insstitution_net_volume?.startsWith("-")
+                ? "blue"
+                : "black",
+          }}
+        >
+          {item.insstitution_net_volume}
+        </td>
+        <td
+          style={{
+            color: item.foreign_net_volume?.startsWith("+")
+              ? "red"
+              : item.foreign_net_volume?.startsWith("-")
+                ? "blue"
+                : "black",
+          }}
+        >
+          {item.foreign_net_volume}
+        </td>
         <td>{item.foreign_holding_shares}</td>
         <td>{item.foreign_holding_ratio}</td>
       </tr>
@@ -46,9 +85,9 @@ function RenderRow({ tabId, item }) {
         <td>{item["operating_income"]}</td>
         <td>{item["net_income"]}</td>
         <td>{item["operating_margin"]}</td>
-        <td>{item["net_porfit_margin"]}</td>
+        <td>{item["net_profit_margin"]}</td>
         <td>{item["roe"]}</td>
-        <td>{item["debt_to_equilty"]}</td>
+        <td>{item["debt_to_equity"]}</td>
         <td>{item["quick_ratio"]}</td>
         <td>{item["reserve_ratio"]}</td>
         <td>{item["eps"]}</td>

@@ -32,16 +32,36 @@ def stock_crawl_and_save(code: str):
         data = []
         for row in rows:
             cols = row.find_all("td")
+
+            # td가 4개인 정상적인 데이터 행만 추출 (space 행 제외)
             if len(cols) == 4:
-                data.append([c.get_text(strip=True) for c in cols])
+                # 콤마 제거 및 텍스트 정리
+                sell_rank = cols[0].get_text(strip=True)
+                sell_vol = cols[1].get_text(strip=True).replace(',', '')
+                buy_rank = cols[2].get_text(strip=True)
+                buy_vol = cols[3].get_text(strip=True).replace(',', '')
+
+                data.append([sell_rank, sell_vol, buy_rank, buy_vol])
+
+        if not data:
+            print("추출된 데이터가 없습니다.")
+            return None
 
         columns = ["sell_rank", "sell_volume", "buy_rank", "buy_volume"]
         df = pd.DataFrame(data, columns=columns)
+
+        # 데이터 타입 변환 (숫자형으로 저장해야 나중에 활용하기 좋습니다)
+        df["sell_volume"] = pd.to_numeric(df["sell_volume"], errors='coerce')
+        df["buy_volume"] = pd.to_numeric(df["buy_volume"], errors='coerce')
         df.insert(0, "code", code)
 
-        # DB 저장 (replace)
-        df.to_sql('stock', engine, if_exists='append', index=False)
+        # 2. DB 저장
+        # if_exists='append'이므로 매번 실행 시 누적됩니다.
+        # 최신 데이터만 유지하려면 'replace'를 고려하세요.
+        df.to_sql('stock', engine, if_exists='replace', index=False)
+
         return df.to_dict(orient="records")
+
     except Exception as e:
         print(f"Crawling Error: {e}")
         return None
