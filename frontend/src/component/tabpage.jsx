@@ -19,6 +19,8 @@ function TabPage() {
     { id: "news", name: "최신뉴스", endpoint: "news" },
     { id: "board", name: "종목토론", endpoint: "board" },
     { id: "summary", name: "기업실적", endpoint: "summary" },
+    { id: "news_mecab", name: "뉴스분석", endpoint: "news_mecab" },
+    { id: "summary_ms", name: "실적분석", endpoint: "summay_ms" },
   ];
 
   const handleSearch = async (targetTab = activeTab) => {

@@ -99,6 +99,10 @@ function RenderRow({ tabId, item }) {
         <td>{item["payout_ratio"]}</td>
       </tr>
     );
+  } else if (tabId === "news_mecab") {
+    return <th></th>;
+  } else if (tabId === "summary_ms") {
+    return <th></th>;
   }
 
   return (
