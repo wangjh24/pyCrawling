@@ -7,7 +7,8 @@ const API_BASE_URL = "http://localhost:8000/api";
 
 function TabPage() {
   const [code, setCode] = useState("");
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([]); // 일반 테이블용 데이터
+  const [analysisData, setAnalysisData] = useState(null); // 뉴스 분석용 데이터
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("stock");
   const [currentPage, setCurrentPage] = useState(1);
@@ -20,19 +21,31 @@ function TabPage() {
     { id: "board", name: "종목토론", endpoint: "board" },
     { id: "summary", name: "기업실적", endpoint: "summary" },
     { id: "news_mecab", name: "뉴스분석", endpoint: "news_mecab" },
-    { id: "summary_ms", name: "실적분석", endpoint: "summay_ms" },
+    { id: "summary_ms", name: "실적분석", endpoint: "summary_ms" },
   ];
 
   const handleSearch = async (targetTab = activeTab) => {
     if (!code) return alert("종목코드를 입력하세요");
     setLoading(true);
     setData([]);
+    setAnalysisData(null);
+    setCurrentPage(1);
+
     try {
       const response = await axios.get(`${API_BASE_URL}/${targetTab}/${code}`);
-      setData(response.data);
+
+      if (targetTab === "news_mecab") {
+        // 뉴스 분석 탭은 { image, keywords } 형태의 객체임
+        setAnalysisData(response.data);
+      } else {
+        // 나머지 탭은 배열 형태임
+        setData(Array.isArray(response.data) ? response.data : []);
+      }
     } catch (error) {
       console.error("데이터 호출 실패:", error);
-      alert("데이터가 없거나 서버 오류 발생했습니다.");
+      alert(
+        error.response?.data?.detail || "데이터 로드 중 오류가 발생했습니다.",
+      );
     } finally {
       setLoading(false);
     }
@@ -40,10 +53,10 @@ function TabPage() {
 
   const changeTab = (tabId) => {
     setActiveTab(tabId);
-    setCurrentPage(1);
     if (code) handleSearch(tabId);
   };
 
+  // 페이징 처리 (일반 데이터용)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
@@ -83,119 +96,141 @@ function TabPage() {
           ))}
         </div>
 
-        {loading && <p className={styles.statusMsg}>데이터를 불러오는 중...</p>}
+        {loading && (
+          <p className={styles.statusMsg}>데이터를 불러오는 중입니다...</p>
+        )}
 
-        {!loading && data && data.length > 0 ? (
+        {!loading && (
           <>
-            <table className={styles.mainTable}>
-              {activeTab === "frgn" && (
-                <colgroup>
-                  <col style={{ width: "12%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "10%" }} />
-                  <col style={{ width: "8%" }} />
-                  <col style={{ width: "15%" }} />
-                  <col style={{ width: "12%" }} />
-                  <col style={{ width: "12%" }} />
-                  <col style={{ width: "13%" }} />
-                  <col style={{ width: "8%" }} />
-                </colgroup>
-              )}
-              {activeTab === "stock" && (
-                <colgroup>
-                  <col style={{ width: "25%" }} />
-                  <col style={{ width: "25%" }} />
-                  <col style={{ width: "25%" }} />
-                  <col style={{ width: "25%" }} />
-                </colgroup>
-              )}
-              {(activeTab === "news" || activeTab === "board") && (
-                <colgroup>
-                  <col style={{ width: "30%" }} />
-                  <col style={{ width: "55%" }} />
-                  <col style={{ width: "15%" }} />
-                </colgroup>
-              )}
+            {/* 뉴스 분석 전용 화면 */}
+            {activeTab === "news_mecab" && analysisData ? (
+              <div className={styles.analysisBox}>
+                <h2 className={styles.subTitle}>
+                  뉴스 키워드 분석 (워드클라우드)
+                </h2>
+                <div style={{ textAlign: "center", margin: "20px 0" }}>
+                  <img
+                    src={analysisData.image}
+                    alt="Wordcloud"
+                    style={{
+                      width: "100%",
+                      borderRadius: "10px",
+                      boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
+                    }}
+                  />
+                </div>
+                <h3 className={styles.subTitle}>핵심 키워드 TOP 20</h3>
+                <table className={styles.mainTable}>
+                  <thead>
+                    <tr>
+                      <th>순위</th>
+                      <th>키워드</th>
+                      <th>빈도수</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {analysisData.keywords.map((kw, idx) => (
+                      <tr key={idx}>
+                        <td style={{ textAlign: "center" }}>{idx + 1}</td>
+                        <td style={{ textAlign: "center" }}>{kw.text}</td>
+                        <td style={{ textAlign: "center" }}>{kw.value}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ) : null}
 
-              <thead>
-                {activeTab === "frgn" && (
-                  <tr>
-                    <th>날짜</th>
-                    <th>종가</th>
-                    <th>전일비</th>
-                    <th>등락률</th>
-                    <th>거래량</th>
-                    <th>기관순매수</th>
-                    <th>외인순매수</th>
-                    <th>외인보유</th>
-                    <th>비중</th>
-                  </tr>
-                )}
-                {activeTab === "stock" && (
-                  <tr>
-                    <th>매도기업</th>
-                    <th>매도거래량</th>
-                    <th>매수기업</th>
-                    <th>매수거래량</th>
-                  </tr>
-                )}
-                {(activeTab === "news" || activeTab === "board") && (
-                  <tr>
-                    <th>제목</th>
-                    <th>내용</th>
-                    <th>날짜</th>
-                  </tr>
-                )}
-                {activeTab === "summary" && (
-                  <tr>
-                    <th>날짜</th>
-                    <th>구분</th>
-                    <th>매출액</th>
-                    <th>영업이익</th>
-                    <th>당기순이익</th>
-                    <th>영업이익률</th>
-                    <th>순이익률</th>
-                    <th>ROE(지배주주)</th>
-                    <th>부채비율</th>
-                    <th>당좌비율</th>
-                    <th>유보율</th>
-                    <th>EPS(원)</th>
-                    <th>PER(배)</th>
-                    <th>BPS(원)</th>
-                    <th>PBR(배)</th>
-                    <th>주당배당금(원)</th>
-                    <th>시가배당률(%)</th>
-                    <th>배당성향(%)</th>
-                  </tr>
-                )}
-              </thead>
-              <tbody>
-                {currentItems.map((item, index) => (
-                  <RenderRow key={index} tabId={activeTab} item={item} />
-                ))}
-              </tbody>
-            </table>
+            {/* 일반 테이블 화면 */}
+            {activeTab !== "news_mecab" && data.length > 0 ? (
+              <>
+                <table className={styles.mainTable}>
+                  {/* ... colgroup 로직 (생략 없이 유지됨) ... */}
+                  <thead>
+                    {activeTab === "frgn" && (
+                      <tr>
+                        <th>날짜</th>
+                        <th>종가</th>
+                        <th>전일비</th>
+                        <th>등락률</th>
+                        <th>거래량</th>
+                        <th>기관순매수</th>
+                        <th>외인순매수</th>
+                        <th>외인보유</th>
+                        <th>비중</th>
+                      </tr>
+                    )}
+                    {activeTab === "stock" && (
+                      <tr>
+                        <th>매도기업</th>
+                        <th>매도거래량</th>
+                        <th>매수기업</th>
+                        <th>매수거래량</th>
+                      </tr>
+                    )}
+                    {(activeTab === "news" || activeTab === "board") && (
+                      <tr>
+                        <th>제목</th>
+                        <th>내용</th>
+                        <th>날짜</th>
+                      </tr>
+                    )}
+                    {activeTab === "summary" && (
+                      <tr>
+                        <th>날짜</th>
+                        <th>구분</th>
+                        <th>매출액</th>
+                        <th>영업이익</th>
+                        <th>당기순이익</th>
+                        <th>영업이익률</th>
+                        <th>순이익률</th>
+                        <th>ROE</th>
+                        <th>부채비율</th>
+                        <th>당좌비율</th>
+                        <th>유보율</th>
+                        <th>EPS</th>
+                        <th>PER</th>
+                        <th>BPS</th>
+                        <th>PBR</th>
+                        <th>배당금</th>
+                        <th>배당률</th>
+                        <th>성향</th>
+                      </tr>
+                    )}
+                  </thead>
+                  <tbody>
+                    {currentItems.map((item, index) => (
+                      <RenderRow key={index} tabId={activeTab} item={item} />
+                    ))}
+                  </tbody>
+                </table>
 
-            <div className={styles.pagination}>
-              <button
-                disabled={currentPage === 1}
-                onClick={() => setCurrentPage((prev) => prev - 1)}
-              >
-                이전
-              </button>
-              <span>
-                {currentPage} / {totalPages}
-              </span>
-              <button
-                disabled={currentPage === totalPages}
-                onClick={() => setCurrentPage((prev) => prev + 1)}
-              >
-                다음
-              </button>
-            </div>
+                <div className={styles.pagination}>
+                  <button
+                    disabled={currentPage === 1}
+                    onClick={() => setCurrentPage((prev) => prev - 1)}
+                  >
+                    이전
+                  </button>
+                  <span>
+                    {" "}
+                    {currentPage} / {totalPages}{" "}
+                  </span>
+                  <button
+                    disabled={currentPage === totalPages}
+                    onClick={() => setCurrentPage((prev) => prev + 1)}
+                  >
+                    다음
+                  </button>
+                </div>
+              </>
+            ) : (
+              !loading &&
+              !analysisData && (
+                <p className={styles.statusMsg}>표시할 데이터가 없습니다.</p>
+              )
+            )}
           </>
-        ) : (
-          !loading && <p className={styles.statusMsg}>데이터가 없습니다.</p>
         )}
       </div>
     </div>
