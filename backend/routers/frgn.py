@@ -30,7 +30,7 @@ def buysell_crawl_and_save(code: str):
     all_data = []  # 모든 페이지 데이터를 담을 리스트
 
     # 실제로는 너무 많은 페이지를 크롤링하면 차단되므로 범위를 제한하는 것이 좋습니다 (예: 5페이지)
-    for number in range(1, min(page_count + 1, 6)):
+    for number in range(1, min(page_count + 1, 100)):
         page_url = f"{url}&page={number}"
         res = requests.get(page_url, headers=headers)
         res.encoding = "euc-kr"
