@@ -13,6 +13,7 @@ function TabPage() {
   const [activeTab, setActiveTab] = useState("stock");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [predictData, setPredictData] = useState(null); // 예측 데이터용 상태
 
   const tabs = [
     { id: "stock", name: "종합정보", endpoint: "stock" },
@@ -21,24 +22,30 @@ function TabPage() {
     { id: "board", name: "종목토론", endpoint: "board" },
     { id: "summary", name: "기업실적", endpoint: "summary" },
     { id: "news_mecab", name: "뉴스분석", endpoint: "news_mecab" },
-    { id: "summary_ms", name: "실적분석", endpoint: "summary_ms" },
+    { id: "predict", name: "AI 예측", endpoint: "predict" }, // AI 예측 탭 추가
   ];
 
   const handleSearch = async (targetTab = activeTab) => {
     if (!code) return alert("종목코드를 입력하세요");
     setLoading(true);
+
+    // 모든 데이터 초기화
     setData([]);
     setAnalysisData(null);
+    setPredictData(null);
     setCurrentPage(1);
 
     try {
-      const response = await axios.get(`${API_BASE_URL}/${targetTab}/${code}`);
+      // 백엔드 엔드포인트와 일치시키기 위해 targetTab 분기 처리 가능
+      const endpoint = targetTab === "predict" ? "frgn-ms" : targetTab;
+      const response = await axios.get(`${API_BASE_URL}/${endpoint}/${code}`);
 
       if (targetTab === "news_mecab") {
-        // 뉴스 분석 탭은 { image, keywords } 형태의 객체임
         setAnalysisData(response.data);
+      } else if (targetTab === "predict") {
+        // 2. 예측 데이터 별도 저장
+        setPredictData(response.data);
       } else {
-        // 나머지 탭은 배열 형태임
         setData(Array.isArray(response.data) ? response.data : []);
       }
     } catch (error) {
@@ -140,9 +147,57 @@ function TabPage() {
                 </table>
               </div>
             ) : null}
+            {activeTab === "predict" && predictData && (
+              <div className={styles.analysisBox}>
+                <h2 className={styles.subTitle}>
+                  XGBoost 기반 다음 거래일 예측
+                </h2>
+                <div className={styles.predictCard}>
+                  <div className={styles.predictGrid}>
+                    <div className={styles.predictItem}>
+                      <span>현재가</span>
+                      <strong>
+                        {predictData.current_price?.toLocaleString()}원
+                      </strong>
+                    </div>
+                    <div className={styles.predictItem}>
+                      <span>예상 변동폭</span>
+                      <strong
+                        className={
+                          predictData.predicted_change > 0
+                            ? styles.up
+                            : styles.down
+                        }
+                      >
+                        {predictData.predicted_change > 0 ? "▲" : "▼"}{" "}
+                        {Math.abs(
+                          predictData.predicted_change,
+                        ).toLocaleString()}
+                        원
+                      </strong>
+                    </div>
+                    <div className={styles.predictItem}>
+                      <span>예상 종가</span>
+                      <strong>
+                        {predictData.predicted_price?.toLocaleString()}원
+                      </strong>
+                    </div>
+                    <div className={styles.predictItem}>
+                      <span>모델 신뢰도 (RMSE)</span>
+                      <span>{predictData.rmse}</span>
+                    </div>
+                  </div>
+                  <div className={styles.predictMessage}>
+                    <p>{predictData.message}</p>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* 일반 테이블 화면 */}
-            {activeTab !== "news_mecab" && data.length > 0 ? (
+            {activeTab !== "news_mecab" &&
+            activeTab !== "predict" &&
+            data.length > 0 ? (
               <>
                 <table className={styles.mainTable}>
                   {/* ... colgroup 로직 (생략 없이 유지됨) ... */}
@@ -226,7 +281,9 @@ function TabPage() {
               </>
             ) : (
               !loading &&
-              !analysisData && (
+              !analysisData &&
+              !predictData &&
+              data.length === 0 && (
                 <p className={styles.statusMsg}>표시할 데이터가 없습니다.</p>
               )
             )}

@@ -6,7 +6,7 @@ from backend.routers import board
 from backend.routers import news
 from backend.routers import summary
 from backend.routers import news_mecab
-# from backend.routers import summary_ms
+from backend.routers import frgn_ms
 import uvicorn
 
 app = FastAPI()
@@ -26,6 +26,6 @@ app.include_router(board.router)
 app.include_router(news.router)
 app.include_router(summary.router)
 app.include_router(news_mecab.router)
-#app.include_router(summary_ms.router)
+app.include_router(frgn_ms.router)
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)

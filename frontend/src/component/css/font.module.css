@@ -152,3 +152,52 @@
   background-color: #f1f3f5;
   font-weight: 700;
 }
+.predictCard {
+  background: #fdfdfd;
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 25px;
+  margin-top: 20px;
+}
+
+.predictGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.predictItem {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.predictItem span:first-child {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 5px;
+}
+
+.predictItem strong {
+  font-size: 1.4rem;
+}
+
+.up {
+  color: #d73a49;
+} /* 빨간색 */
+.down {
+  color: #005cc5;
+} /* 파란색 */
+
+.predictMessage {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 15px;
+  background: #f0f7ff;
+  border-radius: 8px;
+}
