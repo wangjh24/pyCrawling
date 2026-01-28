@@ -171,6 +171,9 @@ backend
 
 <img width="1920" height="869" alt="image" src="https://github.com/user-attachments/assets/ef7d5b15-3d06-4cac-b2b1-1bc71f3d7097" />
 
+<img width="1630" height="839" alt="image" src="https://github.com/user-attachments/assets/8806c235-60d4-42a3-b457-e72a67ce01aa" />
+
+<img width="1675" height="868" alt="image" src="https://github.com/user-attachments/assets/4f127f7d-8af1-4610-8cef-c9d2c0fa505c" />
 
 ## ⚙️開始方法
 ### 1. 準備：プログラムのダウンロード
