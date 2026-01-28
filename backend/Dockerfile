@@ -1,5 +1,5 @@
 # backend/Dockerfile
-FROM python:3.9-slim
+FROM python:3.11-slim
 
 # 1. 시스템 의존성 설치 (Mecab 빌드용)
 RUN apt-get update && apt-get install -y \
