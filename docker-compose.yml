@@ -1,0 +1,18 @@
+services:
+  # FastAPI 서비스
+  backend:
+    build: ./backend
+    container_name: pycrawling-api
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app # 코드 수정 시 자동 반영 (개발 편의성)
+
+  # Vite+React 서비스
+  frontend:
+    build: ./frontend
+    container_name: pycrawling-web
+    ports:
+      - "5173:80" # 실제 접속은 5173포트로 하되, 도커 안에서는 Nginx 80포트로 연결
+    depends_on:
+      - backend
