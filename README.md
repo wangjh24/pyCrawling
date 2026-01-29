@@ -135,27 +135,35 @@ FastAPI(Backend)、React(Frontend)、PostgreSQL(Database)を活用し、デー�
 
 ## 📂 Directory: ディレクトリ構造
 ```project
-frontend
-┗src
- ┣ component
- ┃ ┣ css
- ┃ ┃ ┗ font.css
- ┃ ┣ RowRender.jsx
- ┃ ┗ tabpage.jsx
- ┣ App.css
- ┣ App.jsx
- ┣ index.css
- ┗ main.jsx
-backend
- ┣ routers
- ┃ ┣ board.py
- ┃ ┣ frgn.py
- ┃ ┣ news.py
- ┃ ┣ stock.py
- ┃ ┗ summary.py
- ┣ database.py
- ┗ main.py
-
+pycrawling
+┃
+┃frontend
+┃┗src
+┃ ┣ component
+┃ ┃ ┣ css
+┃ ┃ ┃ ┗ font.css
+┃ ┃ ┣ RowRender.jsx
+┃ ┃ ┗ tabpage.jsx
+┃ ┣ App.css
+┃ ┣ Dockerfile
+┃ ┣ App.jsx
+┃ ┣ index.css
+┃  ┣ index.css
+┃ ┗ main.jsx
+┃ backend
+┃ ┣ routers
+┃ ┃ ┣ board.py
+┃ ┃ ┣ frgn.py
+┃ ┃ ┣ news.py
+┃ ┃ ┣ stock.py
+┃ ┃ ┗ summary.py
+┃ ┃
+┃ ┣ Dockerfile
+┃ ┣ requirements.txt
+┃ ┣ database.py
+┃ ┗ main.py
+┃
+┗ docker-compose
 ```
 
 
