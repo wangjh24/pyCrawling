@@ -232,7 +232,6 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-ポイント: 最後に「Uvicorn running on http://127.0.0.1:8000」と表示されれば成功です！この画面は閉じずに、新しく別のターミナルウィンドウを開いて次のステップへ進んでください。
 
 ---
 
