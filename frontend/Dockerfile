@@ -1,15 +1,16 @@
-# frontend/Dockerfile
-# 1단계: 빌드 (Vite를 사용하여 정적 파일 생성)
-FROM node:18-alpine AS build-stage
+# 1. 빌드 스테이지
+FROM node:20-slim AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
 RUN npm run build
 
-# 2단계: 배포 (Nginx로 가볍게 서빙)
+# 2. 실행 스테이지 (Nginx 사용)
 FROM nginx:stable-alpine
-# Vite의 기본 빌드 폴더 명칭은 'dist'입니다 (CRA는 build)
-COPY --from=build-stage /app/dist /usr/share/nginx/html
+# 설정 파일 복사
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 빌드 결과물 복사
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

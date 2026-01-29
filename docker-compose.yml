@@ -1,18 +1,40 @@
+version: "3.8"
+
 services:
-  # FastAPI 서비스
+  # 데이터베이스 설정
+  db:
+    image: postgres:15
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: PyCrawling
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 백엔드 (FastAPI) 설정
   backend:
-    build: ./backend
-    container_name: pycrawling-api
+    build:
+      context: .
+      dockerfile: ./backend/Dockerfile
+    container_name: fastapi_backend
     ports:
       - "8000:8000"
-    volumes:
-      - ./backend:/app # 코드 수정 시 자동 반영 (개발 편의성)
+    depends_on:
+      - db
+    environment:
+      # 컨테이너 환경에서는 localhost 대신 서비스 이름인 'db'를 사용해야 합니다.
+      - DATABASE_URL=postgresql://test:1234@db:5432/PyCrawling
 
-  # Vite+React 서비스
+  # 프론트엔드 (Vite React) 설정
   frontend:
     build: ./frontend
-    container_name: pycrawling-web
+    container_name: react_frontend
     ports:
-      - "5173:80" # 실제 접속은 5173포트로 하되, 도커 안에서는 Nginx 80포트로 연결
+      - "5173:80" # 로컬의 5173 포트를 Nginx의 80포트로 연결
     depends_on:
       - backend
+volumes:
+  postgres_data:
